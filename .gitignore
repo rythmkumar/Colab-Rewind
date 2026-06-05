@@ -1,0 +1,13 @@
+# Private keys
+*.pem
+
+# Packed extensions
+*.crx
+*.zip
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Node modules (if applicable)
+node_modules/x
