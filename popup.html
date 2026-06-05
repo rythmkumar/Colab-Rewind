@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      width: 250px;
+      padding: 15px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      text-align: center;
+      background-color: #f8f9fa;
+      color: #3c4043;
+      margin: 0;
+    }
+    h2 {
+      color: #1a73e8;
+      margin-top: 0;
+      font-size: 18px;
+    }
+    p {
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 10px;
+      padding: 5px 10px;
+      background: #e6f4ea;
+      color: #137333;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    /* This draws a perfect green dot without needing an emoji */
+    .status::before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background-color: #137333;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Colab Rewind</h2>
+  <p>Your local time machine is active. Open any Google Colab notebook to see the Rewind button next to your code cells!</p>
+  <div class="status">Active</div>
+</body>
+</html>
