@@ -18,7 +18,7 @@ const styles = `
     .colab-rewind-btn {
         background: transparent !important; 
         border: 1px solid transparent !important;
-        /* 🚨 THE FIX: Match the native text color so it flips to dark gray in Light Mode */
+        /*   THE FIX: Match the native text color so it flips to dark gray in Light Mode */
         // color: var(--colab-primary-text-color, #5f6368) !important; 
         color: var(--colab-icon-color, #5f6368) !important;
         cursor: pointer;
@@ -136,7 +136,7 @@ setInterval(() => {
     const toolbars = document.querySelectorAll('colab-cell-toolbar');
     
     toolbars.forEach(toolbar => {
-        // 2. 🚨 THE FORCEFIELD CHECK: Make sure the Shadow DOM is ready
+        // 2. Make sure the Shadow DOM is ready
         if (!toolbar.shadowRoot) return;
 
         // 3. Prevent duplicates INSIDE the shadow root
@@ -154,10 +154,10 @@ setInterval(() => {
         // If it takes up too much space, just change this to "↺" later!
         btn.innerHTML = `↺ Rewind`;
 
-        // 5. 🚨 INLINE STYLES: 
+        // 5. INLINE STYLES: 
         btn.style.background = 'transparent';
         btn.style.border = 'none';
-        btn.style.color = 'var(--colab-icon-color, #5f6368)'; /* 🚨 Changed to crisp white */
+        btn.style.color = 'var(--colab-icon-color, #5f6368)'; /* Changed to crisp white */
         
         btn.style.cursor = 'pointer';
         btn.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'; /* Matches native UI font */
@@ -168,7 +168,7 @@ setInterval(() => {
         btn.style.display = 'flex';
         btn.style.alignItems = 'center';
         btn.style.justifyContent = 'center';
-        btn.style.height = '32px'; /* 🚨 Matches Colab's exact native icon height */
+        btn.style.height = '32px'; /* Matches Colab's exact native icon height */
         btn.style.borderRadius = '4px';
         
         // JS-based hover effect
@@ -197,7 +197,7 @@ setInterval(() => {
                 dropdown.classList.add('show');
                 dropdown.innerHTML = '<div class="rewind-empty">Loading history...</div>';
                 
-                const notebookId = window.location.pathname; // 🚨 GRAB THE URL
+                const notebookId = window.location.pathname; // GRAB THE URL
                 
                 chrome.runtime.sendMessage({ action: 'GET_CELL_HISTORY', data: { notebookId: notebookId, id: cellElement.id } }, (response) => {
                     if (response && response.status === "success") {
@@ -211,7 +211,7 @@ setInterval(() => {
             }
         });
 
-        // 8. 🚨 PIERCE THE SHADOW DOM: Prepend it directly inside the shadow root!
+        // 8.   PIERCE THE SHADOW DOM: Prepend it directly inside the shadow root!
         toolbar.shadowRoot.prepend(btn);
     });
 }, 150);
@@ -229,7 +229,7 @@ function renderDropdownContent(dropdown, historyData, cellElement) {
         if (!currentTextElement) return;
         const currentText = currentTextElement.innerText.replace(/\u200B/g, '');
         
-        const notebookId = window.location.pathname; // 🚨 GRAB THE URL
+        const notebookId = window.location.pathname; //   GRAB THE URL
         
         chrome.runtime.sendMessage({ action: 'SAVE_CELL_RUN', data: { notebookId: notebookId, id: cellElement.id, text: currentText, isCheckpoint: true } }, () => {
             dropdown.classList.remove('show');
@@ -239,7 +239,7 @@ function renderDropdownContent(dropdown, historyData, cellElement) {
     dropdown.appendChild(saveBtn);
 
     // ==========================================
-    // 👑 THE CHECKPOINTS ONLY TOGGLE
+    // THE CHECKPOINTS ONLY TOGGLE
     // ==========================================
     const filterContainer = document.createElement('div');
     // Using your native Colab variables so it adapts perfectly to Light/Dark mode!
@@ -279,7 +279,7 @@ function renderDropdownContent(dropdown, historyData, cellElement) {
         // 2. Hide the "Recent Runs" text divider to keep the UI super clean
         const dividers = dropdown.querySelectorAll('.history-divider');
         dividers.forEach(div => {
-            // 🚨 Changed innerText to textContent to bypass the CSS uppercase rule!
+            // Changed innerText to textContent to bypass the CSS uppercase rule!
             if (div.textContent.includes('Recent Runs')) {
                 div.style.display = isChecked ? 'none' : 'block';
             }
@@ -337,7 +337,7 @@ function renderDropdownContent(dropdown, historyData, cellElement) {
                 showPreviewOverlay(cellElement, run); 
             });
 
-            // 4. 🚨 ADD THE TRASH CAN LISTENER HERE 🚨
+            // 4.   ADD THE TRASH CAN LISTENER HERE  
             const deleteBtn = item.querySelector('.delete-run');
             deleteBtn.addEventListener('click', (e) => {
                 // Critical: Stop the row's click listener from firing!
@@ -408,13 +408,13 @@ function restoreCodeToCell(cellElement, oldText) {
         // 4. Highlight all text inside the hidden box
         textarea.select();
 
-        // 5. 🚨 THE NUKE: Tell the browser to press the "Delete" key natively.
+        // 5.   THE NUKE: Tell the browser to press the "Delete" key natively.
         // This forces Monaco's visual brain to wake up, wipe the screen, and reset the cursor to line 1!
         document.execCommand('delete', false, null);
 
         // 6. Give Monaco 50ms to process the deletion and clear the UI...
         setTimeout(() => {
-            // 7. 🚨 THE PAVE: Now that the cell is completely empty, inject the historical code!
+            // 7.   THE PAVE: Now that the cell is completely empty, inject the historical code!
             document.execCommand('insertText', false, oldText);
             
             console.log("[Colab Rewind] Code successfully overwritten!");
@@ -453,7 +453,7 @@ function captureAndSaveRun(cellElement) {
     if (!editor) return;
     
     const currentText = editor.innerText.replace(/\u200B/g, '');
-    const notebookId = window.location.pathname; // 🚨 GRAB THE URL
+    const notebookId = window.location.pathname; //   GRAB THE URL
     
     chrome.runtime.sendMessage({ 
         action: 'SAVE_CELL_RUN', 
@@ -462,7 +462,7 @@ function captureAndSaveRun(cellElement) {
     console.log("[Colab Rewind] Auto-saved run for cell:", cellElement.id);
 }
 
-// 🚨 TRIGGER 1: Keyboard Shortcuts (Shift+Enter or Ctrl+Enter)
+//   TRIGGER 1: Keyboard Shortcuts (Shift+Enter or Ctrl+Enter)
 // By adding 'true' at the end, we intercept the event on the way DOWN (Capture Phase) 
 // before Colab has a chance to block it!
 document.addEventListener('keydown', (e) => {
@@ -477,7 +477,7 @@ document.addEventListener('keydown', (e) => {
     }
 }, true); // <--- THIS IS THE MAGIC BULLET
 
-// 🚨 TRIGGER 2: Mouse Clicks on the Play Button
+//   TRIGGER 2: Mouse Clicks on the Play Button
 document.addEventListener('click', (e) => {
     // Google Colab uses specific custom tags for their play buttons
     const playButton = e.target.closest('colab-run-button, [aria-label*="Run cell"]');

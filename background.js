@@ -37,7 +37,7 @@ async function saveRun(notebookId, cellId, text, isCheckpoint = false) {
         const store = transaction.objectStore(STORE_NAME);
         
         const record = {
-            tabId: notebookId, // 🚨 We store the notebook URL inside the existing tabId column!
+            tabId: notebookId, //    We store the notebook URL inside the existing tabId column!
             cellId: cellId,
             text: text,
             timestamp: Date.now(),
@@ -134,7 +134,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     else if (message.action === 'GET_CELL_HISTORY') {
         const { notebookId, id } = message.data;
         
-        // 🚨 Fixed: Calling getCellHistory instead of getHistory
+        //  Calling getCellHistory 
         getCellHistory(notebookId, id)
             .then(data => sendResponse({ status: "success", data: data }))
             .catch(err => sendResponse({ status: "error", error: err.toString() }));
@@ -170,7 +170,7 @@ async function getCellHistory(notebookId, cellId) {
         const request = index.getAll(cellId);
 
         request.onsuccess = () => {
-            // 🚨 Filter runs to ONLY include the current notebook's URL
+            //  Filter runs to ONLY include the current notebook's URL
             const runs = request.result.filter(r => r.tabId === notebookId);
             runs.sort((a, b) => b.timestamp - a.timestamp);
             resolve(runs);
